@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+#
+# Put customizations to your image in this file.
+
+PATH=/opt/local/gnu/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin
+
+# Exit if any commands fail
+set -o errexit
+
+# Ensure we have updated standard packages
+echo "* Updating standard packages.";
+touch /opt/local/.dlj_license_accepted
+pkg_delete -v nodejs smtools dtracetools
+pkg_add -v nodejs smtools dtracetools htop
+npm install smartdc -g
+npm install jsontool -g
+
+# Configuring image specific packages
+echo "* Configuring image specific packages.";
+
+# Clean up
+echo "* Cleaning up."
+rm -rf /root/*
+
+# Prepare image for provisioning
+sm-prepare-image -y

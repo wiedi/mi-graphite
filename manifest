@@ -1,0 +1,7 @@
+name="example"
+organization="Joyent"
+brand="Instance"
+version="1.0.0"
+description="Description for image example"
+homepage="http://wiki.joyent.com/jpc2/Joyent+example+SmartMachine"
+users="root admin"
