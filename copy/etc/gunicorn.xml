@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='gunicorn/graphite' type='service' version='0'>
+    <create_default_instance enabled='true'/>
+    <single_instance/>
+    <dependency name='net-physical' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/network/physical'/>
+    </dependency>
+    <dependency name='filesystem' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/system/filesystem/local'/>
+    </dependency>
+    <method_context working_directory='/opt/graphite/conf'>
+       <method_environment>
+         <envvar name='PATH' value='/opt/graphite/bin/:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin:/bin'/> 
+       </method_environment>
+     </method_context>
+    <exec_method name='start'   type='method' exec='/opt/local/bin/gunicorn --log-syslog -D -u %{gunicorn_user} -g %{gunicorn_group} -w  %{gunicorn_worker} %{graphite_app}' timeout_seconds='0'/>
+    <exec_method name='stop'    type='method' exec=':kill'      timeout_seconds='10'/>
+	<exec_method name='refresh' type='method' exec=':kill -HUP' timeout_seconds='60' />
+    <property_group name='startd' type='framework'>
+      <propval name='duration'     type='astring' value='contract'/>
+	  <propval name="ignore_error" type="astring" value="core,signal" />
+    </property_group>
+	<property_group name="application" type="application">
+		<propval name="graphite_app"    type="astring" value="graphite_wsgi:application"/>
+		<propval name="gunicorn_group"  type="astring" value="www"/>
+		<propval name="gunicorn_user"   type="astring" value="www"/>
+		<propval name="gunicorn_worker" type="integer" value="4"/>
+	</property_group>
+    <stability value='Unstable'/>
+    <template>
+      <common_name>
+        <loctext xml:lang='C'>Gunicorn for Graphite</loctext>
+      </common_name>
+    </template>
+  </service>
+</service_bundle>

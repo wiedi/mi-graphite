@@ -1,0 +1,1 @@
+python -c "from django.utils.crypto import get_random_string;print 'SECRET_KEY = \"' + get_random_string(50, 'abcdefghijklmnopqrstuvwxyz0123456789\!@#$%^&*(-_=+)') + '\"'" >> /opt/graphite/webapp/graphite/local_settings.py

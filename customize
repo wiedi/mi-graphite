@@ -14,6 +14,56 @@ pkg_add -v nodejs smtools dtracetools htop
 npm install smartdc -g
 npm install jsontool -g
 
+# Install Graphite packages
+echo "* Installing Graphite with pip."
+pip install whisper==0.9.12
+pip install carbon==0.9.12
+pip install graphite-web==0.9.12
+
+# Setup configs
+cd /opt/graphite/conf/
+CONFIG_FILES=(
+	# carbon:
+	aggregation-rules.conf
+	blacklist.conf
+	carbon.amqp.conf
+	#carbon.conf
+	relay-rules.conf
+	rewrite-rules.conf
+	storage-aggregation.conf
+	#storage-schemas.conf
+	whitelist.conf
+	# graphite:
+	dashboard.conf
+	graphTemplates.conf
+)
+for f in "${CONFIG_FILES[@]}"; do
+	echo "* Deploy example config: $f"
+	cp $f.example $f
+done
+mv graphite.wsgi.example graphite_wsgi.py
+cd -
+
+# Create database
+cd /opt/graphite/webapp/graphite
+python manage.py syncdb --noinput
+cd -
+chown -R www:www /opt/graphite/storage/
+
+cd /opt/graphite/webapp/graphite/
+cp local_settings.py.example local_settings.py
+cd -
+
+# Import and enable smf manifests
+svccfg import /etc/carbon-cache.xml
+svccfg import /etc/gunicorn.xml
+rm /etc/carbon-cache.xml /etc/gunicorn.xml
+
+
+# Setup Gunicorn and nginx
+pip install gunicorn==18.0
+
+
 # Configuring image specific packages
 echo "* Configuring image specific packages.";
 

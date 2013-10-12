@@ -1,6 +1,6 @@
-# Changelog for mi-example
+# Changelog for mi-graphite
 
-example-1.0.0
-* Change1
-* Change2
-* etc
+graphite-0.0.1
+* basic graphite from pkgsrc-wip
+* add smf manifest for carbon cache
+* setup apache for the webapp

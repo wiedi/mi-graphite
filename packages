@@ -1,2 +1,11 @@
 # List packages to add to your image one per line.
+nano
 nginx
+py27-pip
+py27-twisted
+py27-sqlite3
+py27-cairo
+py27-django
+py27-django-tagging
+py27-ZopeInterface
+py27-expat
