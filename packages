@@ -1,7 +1,7 @@
 # List packages to add to your image one per line.
 nano
 nginx
-memcached
+#memcached
 py27-pip
 py27-twisted
 py27-sqlite3

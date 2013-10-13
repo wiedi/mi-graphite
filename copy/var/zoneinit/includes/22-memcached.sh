@@ -1,1 +1,1 @@
-svcadm enable memcached:default
+#svcadm enable memcached:default
