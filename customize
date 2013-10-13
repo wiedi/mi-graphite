@@ -20,6 +20,9 @@ pip install whisper==0.9.12
 pip install carbon==0.9.12
 pip install graphite-web==0.9.12
 
+# Install Gunicorn
+pip install gunicorn==18.0
+
 # Setup configs
 cd /opt/graphite/conf/
 CONFIG_FILES=(
@@ -46,23 +49,15 @@ cd -
 
 # Create database
 cd /opt/graphite/webapp/graphite
+cp local_settings.py.example local_settings.py
 python manage.py syncdb --noinput
 cd -
 chown -R www:www /opt/graphite/storage/
-
-cd /opt/graphite/webapp/graphite/
-cp local_settings.py.example local_settings.py
-cd -
 
 # Import and enable smf manifests
 svccfg import /etc/carbon-cache.xml
 svccfg import /etc/gunicorn.xml
 rm /etc/carbon-cache.xml /etc/gunicorn.xml
-
-
-# Setup Gunicorn and nginx
-pip install gunicorn==18.0
-
 
 # Configuring image specific packages
 echo "* Configuring image specific packages.";
