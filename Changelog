@@ -1,5 +1,9 @@
 # Changelog for mi-graphite
 
+graphite-13.2.1
+* use graphite from pip to get 0.9.13
+* switch from apache to nginx+gunicorn
+
 graphite-0.0.1
 * basic graphite from pkgsrc-wip
 * add smf manifest for carbon cache
